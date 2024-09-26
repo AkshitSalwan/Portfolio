@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume-Style Portfolio Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+        :root {
+            --primary-color: #00b8d4;
+            --secondary-color: #333;
+            --background-color: #f0f0f0;
+            --card-background: #2c2c2c;
+            --text-color: #fff;
+            --border-radius: 15px;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        #portfolioForm {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        #portfolio {
+            background-color: var(--card-background);
+            color: var(--text-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .right-column {
+            display: grid;
+            gap: 20px;
+        }
+
+        #portfolioImage {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        h1, h2 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .timeline-marker {
+            width: 15px;
+            height: 15px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            margin-top: 5px;
+        }
+
+        .timeline-content {
+            border-left: 2px solid var(--primary-color);
+            padding-left: 15px;
+        }
+
+        .skills-container {
+            display: grid;
+            gap: 10px;
+        }
+
+        .skill-bar {
+            background-color: #444;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            color: var(--primary-color);
+            font-size: 24px;
+            text-decoration: none;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--secondary-color);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="portfolioForm">
+            <h2>Personal Information</h2>
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" required>
+            
+            <label for="title">Professional Title:</label>
+            <input type="text" id="title" required>
+            
+            <label for="image">Profile Image:</label>
+            <input type="file" id="image" accept="image/*" required>
+            
+            <h2>Education</h2>
+            <div id="educationContainer">
+                <div class="education-item">
+                    <label for="eduYear1">Year:</label>
+                    <input type="text" id="eduYear1" required>
+                    <label for="eduTitle1">Title:</label>
+                    <input type="text" id="eduTitle1" required>
+                    <label for="eduDesc1">Description:</label>
+                    <textarea id="eduDesc1" required></textarea>
+                </div>
+            </div>
+            <button type="button" id="addEducation">Add Education</button>
+            
+            <h2>Experience</h2>
+            <div id="experienceContainer">
+                <div class="experience-item">
+                    <label for="expYear1">Year:</label>
+                    <input type="text" id="expYear1" required>
+                    <label for="expTitle1">Title:</label>
+                    <input type="text" id="expTitle1" required>
+                    <label for="expDesc1">Description:</label>
+                    <textarea id="expDesc1" required></textarea>
+                </div>
+            </div>
+            <button type="button" id="addExperience">Add Experience</button>
+            
+            <h2>Skills</h2>
+            <div id="skillsContainer">
+                <div class="skill-item">
+                    <label for="skillName1">Skill Name:</label>
+                    <input type="text" id="skillName1" required>
+                    <label for="skillLevel1">Skill Level (0-100):</label>
+                    <input type="number" id="skillLevel1" min="0" max="100" required>
+                </div>
+            </div>
+            <button type="button" id="addSkill">Add Skill</button>
+            
+            <h2>Social Links</h2>
+            <label for="linkedin">LinkedIn:</label>
+            <input type="url" id="linkedin">
+            <label for="facebook">Facebook:</label>
+            <input type="url" id="facebook">
+            <label for="instagram">Instagram:</label>
+            <input type="url" id="instagram">
+            
+            <button type="submit">Generate Resume</button>
+        </form>
+        
+        <div id="portfolio" class="hidden">
+            <div class="left-column">
+                <img id="portfolioImage" alt="Profile Image">
+                <h1 id="portfolioName"></h1>
+                <p id="portfolioTitle"></p>
+                <button id="downloadResume">Download Resume</button>
+                <div class="social-icons">
+                    <a id="linkedinLink" href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    <a id="facebookLink" href="#" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                    <a id="instagramLink" href="#" target="_blank"></a>
+                </div>
+            </div>
+            <div class="right-column">
+                <div class="section">
+                    <h2>Education</h2>
+                    <div id="portfolioEducation"></div>
+                </div>
+                <div class="section">
+                    <h2>Experience</h2>
+                    <div id="portfolioExperience"></div>
+                </div>
+                <div class="section">
+                    <h2>Skills</h2>
+                    <div id="portfolioSkills" class="skills-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('portfolioForm');
+        const portfolio = document.getElementById('portfolio');
+        const addEducationBtn = document.getElementById('addEducation');
+        const addExperienceBtn = document.getElementById('addExperience');
+        const addSkillBtn = document.getElementById('addSkill');
+        const educationContainer = document.getElementById('educationContainer');
+        const experienceContainer = document.getElementById('experienceContainer');
+        const skillsContainer = document.getElementById('skillsContainer');
+        const imageInput = document.getElementById('image');
+
+        let educationCount = 1;
+        let experienceCount = 1;
+        let skillCount = 1;
+
+        function addEducation() {
+            educationCount++;
+            const eduDiv = document.createElement('div');
+            eduDiv.className = 'education-item';
+            eduDiv.innerHTML = `
+                <label for="eduYear${educationCount}">Year:</label>
+                <input type="text" id="eduYear${educationCount}" required>
+                <label for="eduTitle${educationCount}">Title:</label>
+                <input type="text" id="eduTitle${educationCount}" required>
+                <label for="eduDesc${educationCount}">Description:</label>
+                <textarea id="eduDesc${educationCount}" required></textarea>
+            `;
+            educationContainer.appendChild(eduDiv);
+        }
+
+        function addExperience() {
+            experienceCount++;
+            const expDiv = document.createElement('div');
+            expDiv.className = 'experience-item';
+            expDiv.innerHTML = `
+                <label for="expYear${experienceCount}">Year:</label>
+                <input type="text" id="expYear${experienceCount}" required>
+                <label for="expTitle${experienceCount}">Title:</label>
+                <input type="text" id="expTitle${experienceCount}" required>
+                <label for="expDesc${experienceCount}">Description:</label>
+                <textarea id="expDesc${experienceCount}" required></textarea>
+            `;
+            experienceContainer.appendChild(expDiv);
+        }
+
+        function addSkill() {
+            skillCount++;
+            const skillDiv = document.createElement('div');
+            skillDiv.className = 'skill-item';
+            skillDiv.innerHTML = `
+                <label for="skillName${skillCount}">Skill Name:</label>
+                <input type="text" id="skillName${skillCount}" required>
+                <label for="skillLevel${skillCount}">Skill Level (0-100):</label>
+                <input type="number" id="skillLevel${skillCount}" min="0" max="100" required>
+            `;
+            skillsContainer.appendChild(skillDiv);
+        }
+
+        addEducationBtn.addEventListener('click', addEducation);
+        addExperienceBtn.addEventListener('click', addExperience);
+        addSkillBtn.addEventListener('click', addSkill);
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            generateResume();
+        });
+
+        function generateResume() {
+          
+            const file = imageInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('portfolioImage').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+            
+    
+            document.getElementById('portfolioName').textContent = document.getElementById('name').value;
+            document.getElementById('portfolioTitle').textContent = document.getElementById('title').value;
+            
+
+            document.getElementById('linkedinLink').href = document.getElementById('linkedin').value;
+            document.getElementById('facebookLink').href = document.getElementById('facebook').value;
+            document.getElementById('instagramLink').href = document.getElementById('instagram').value;
+            
+            
+            const educationSection = document.getElementById('portfolioEducation');
+            educationSection.innerHTML = '';
+            for (let i = 1; i <= educationCount; i++) {
+                const year = document.getElementById(`eduYear${i}`).value;
+                const title = document.getElementById(`eduTitle${i}`).value;
+                const desc = document.getElementById(`eduDesc${i}`).value;
+                if (year && title && desc) {
+                    const eduItem = document.createElement('div');
+                    eduItem.className = 'timeline-item';
+                    eduItem.innerHTML = `
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h3>${year}</h3>
+                            <h4>${title}</h4>
+                            <p>${desc}</p>
+                        </div>
+                    `;
+                    educationSection.appendChild(eduItem);
+                }
+            }
+            
+            
+            const experienceSection = document.getElementById('portfolioExperience');
+            experienceSection.innerHTML = '';
+            for (let i = 1; i <= experienceCount; i++) {
+                const year = document.getElementById(`expYear${i}`).value;
+                const title = document.getElementById(`expTitle${i}`).value;
+                const desc = document.getElementById(`expDesc${i}`).value;
+                if (year && title && desc) {
+                    const expItem = document.createElement('div');
+                    expItem.className = 'timeline-item';
+                    expItem.innerHTML = `
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h3>${year}</h3>
+                            <h4>${title}</h4>
+                            <p>${desc}</p>
+                        </div>
+                    `;
+                    experienceSection.appendChild(expItem);
+                }
+            }
+            
+    
+            const skillsSection = document.getElementById('portfolioSkills');
+            skillsSection.innerHTML = '';
+            for (let i = 1; i <= skillCount; i++) {
+                const name = document.getElementById(`skillName${i}`).value;
+                const level = document.getElementById(`skillLevel${i}`).value;
+                if (name && level) {
+                    const skillItem = document.createElement('div');
+                    skillItem.innerHTML = `
+                        <h4>${name}</h4>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: ${level}%"></div>
+                        </div>
+                    `;
+                    skillsSection.appendChild(skillItem);
+                }
+            }
+            
+            form.classList.add('hidden');
+            portfolio.classList.remove('hidden');
+        }
+
+        
+        document.getElementById('downloadResume').addEventListener('click', () => {
+            alert('Download functionality would be implemented here.');
+        });
+    </script>
+</body>
+</html>
